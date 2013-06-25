@@ -5,19 +5,19 @@
 // ================================================================================================
 //  Created by Tom Bradley on 21/10/2009.
 //  Version 1.5
-//  
+//
 //  Copyright 2012 71Squared All rights reserved.b
-//  
+//
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights
 //  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 //  copies of the Software, and to permit persons to whom the Software is
 //  furnished to do so, subject to the following conditions:
-//  
+//
 //  The above copyright notice and this permission notice shall be included in
 //  all copies or substantial portions of the Software.
-//  
+//
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 //  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 //  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,7 +35,7 @@
 // ================================================================================================
 enum TBXMLErrorCodes {
     D_TBXML_SUCCESS = 0,
-
+    
     D_TBXML_DATA_NIL,
     D_TBXML_DECODE_FAILURE,
     D_TBXML_MEMORY_ALLOC_FAILURE,
@@ -75,6 +75,7 @@ enum TBXMLErrorCodes {
 typedef struct _TBXMLAttribute {
 	char * name;
 	char * value;
+    NSStringEncoding encoding;
 	struct _TBXMLAttribute * next;
 } TBXMLAttribute;
 
@@ -85,6 +86,7 @@ typedef struct _TBXMLAttribute {
 typedef struct _TBXMLElement {
 	char * name;
 	char * text;
+    NSStringEncoding encoding;
 	
 	TBXMLAttribute * firstAttribute;
 	
@@ -149,9 +151,13 @@ typedef void (^TBXMLIterateAttributeBlock)(TBXMLAttribute *attribute, NSString *
 @property (nonatomic, readonly) TBXMLElement * rootXMLElement;
 
 + (id)newTBXMLWithXMLString:(NSString*)aXMLString error:(NSError **)error;
++ (id)newTBXMLWithXMLString:(NSString*)aXMLString encoding:(NSStringEncoding)encoding error:(NSError **)error;
 + (id)newTBXMLWithXMLData:(NSData*)aData error:(NSError **)error;
++ (id)newTBXMLWithXMLData:(NSData*)aData encoding:(NSStringEncoding)encoding error:(NSError **)error;
 + (id)newTBXMLWithXMLFile:(NSString*)aXMLFile error:(NSError **)error;
++ (id)newTBXMLWithXMLFile:(NSString*)aXMLFile encoding:(NSStringEncoding)encoding error:(NSError **)error;
 + (id)newTBXMLWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension error:(NSError **)error;
++ (id)newTBXMLWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension encoding:(NSStringEncoding)encoding error:(NSError **)error;
 
 + (id)newTBXMLWithXMLString:(NSString*)aXMLString __attribute__((deprecated));
 + (id)newTBXMLWithXMLData:(NSData*)aData __attribute__((deprecated));
@@ -160,9 +166,13 @@ typedef void (^TBXMLIterateAttributeBlock)(TBXMLAttribute *attribute, NSString *
 
 
 - (id)initWithXMLString:(NSString*)aXMLString error:(NSError **)error;
+- (id)initWithXMLString:(NSString*)aXMLString encoding:(NSStringEncoding)encoding error:(NSError **)error;
 - (id)initWithXMLData:(NSData*)aData error:(NSError **)error;
+- (id)initWithXMLData:(NSData*)aData encoding:(NSStringEncoding)encoding error:(NSError **)error;
 - (id)initWithXMLFile:(NSString*)aXMLFile error:(NSError **)error;
+- (id)initWithXMLFile:(NSString*)aXMLFile encoding:(NSStringEncoding)encoding error:(NSError **)error;
 - (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension error:(NSError **)error;
+- (id)initWithXMLFile:(NSString*)aXMLFile fileExtension:(NSString*)aFileExtension encoding:(NSStringEncoding)encoding error:(NSError **)error;
 
 - (id)initWithXMLString:(NSString*)aXMLString __attribute__((deprecated));
 - (id)initWithXMLData:(NSData*)aData __attribute__((deprecated));
@@ -172,6 +182,7 @@ typedef void (^TBXMLIterateAttributeBlock)(TBXMLAttribute *attribute, NSString *
 
 - (int) decodeData:(NSData*)data;
 - (int) decodeData:(NSData*)data withError:(NSError **)error;
+- (int) decodeData:(NSData*)data withEncoding:(NSStringEncoding)encoding error:(NSError **)error;
 
 @end
 
